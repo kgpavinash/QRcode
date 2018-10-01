@@ -30,13 +30,14 @@ namespace QRCode
             {
                 await context.Response.WriteAsync("Hello World!");
             });*/
-            app.UseStaticFiles();
+            //app.UseStaticFiles();
+            app.UseFileServer();
 
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Demo}/{action=Index}/(id");
+                    template: "{controller=Demo}/{action=Index}/{id?}");
             });
         }
     }

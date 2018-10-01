@@ -6,17 +6,17 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace QRCode.Controllers
 {
-    [Route("demo")]
+    //[Route("demo")]
     public class DemoController : Controller
     {
-        [Route("index")]
+        /*[Route("index")]
         public IActionResult Index()
         {
             return View();
-        }
+        }*/
 
-        [Route("generate")]
-        public IActionResult Generate(string productId)
+        //[Route("index")]
+        public IActionResult index(string productId)
         {
             ViewBag.productId = productId;
             return View("Index");
