@@ -1,0 +1,24 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <form method="post" asp-controller="demo" asp-action="generate">
+        <input type="text" placeholder="Product Id" name="productId" value="@ViewBag.productId" />
+        <input type="submit" value="Generate" />
+    </form>
+    @if (@ViewBag.productId != null)
+    {
+        <qrcode content="@ViewBag.productId" width="200" height="200" />
+    }
+
+</body>
+</html>
