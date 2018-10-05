@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Razor.TagHelpers;
 using ZXing.QrCode;
 using System.Drawing;
 using System.IO;
+using ZXing;
+using System.Net.Http;
+using System.Reflection.Emit;
 
 namespace QRCode.Tags
 {
@@ -49,8 +52,30 @@ namespace QRCode.Tags
                     output.Attributes.Add("width", width);
                     output.Attributes.Add("height", height);
                     output.Attributes.Add("src", String.Format("data:image/png;base64,{0}",Convert.ToBase64String(memoryStream.ToArray())));
+
+                    //Without Razor
+                    //IBarcodeWriter barCodeWriter = new IBarcodeWriter();
+                    //var writerSvg = new ZXing.IBarcodeWriterSvg
                 }
             }
+        }
+    }
+    [HtmlTargetElement("serve")]
+    public class CloudTagHelper : TagHelper
+    {
+        public async override void Process(TagHelperContext context, TagHelperOutput output)
+        {
+            string endpoint = "http://localhost:30752/CC/api/v1_3/PackagedDrugs/00002300475/QRCodeLink/?CallSystemName=Dr.+Sprenkle+EHR&CallID=1234&DeptName=Neurology&returnSSLLink=false";
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri(endpoint);
+            client.DefaultRequestHeaders.Add("Accept", "image/jpeg");
+            client.DefaultRequestHeaders.Add("Authorization", "SHAREDKEY 4:2uMA90Y/9UZ+FYC9S8p0mH/U1+DUcK14SWDDvSXAbio=");
+            HttpResponseMessage response = await client.GetAsync(endpoint);
+            string thing = response.ToString();
+            output.TagName = "p";
+            output.Attributes.Clear();
+            output.Attributes.Add("src", thing);
+
         }
     }
 }
